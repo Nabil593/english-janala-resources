@@ -1,7 +1,7 @@
 const loadLessons = () => {
     fetch("https://openapi.programming-hero.com/api/levels/all")
     .then ((res) => res.json())
-    .then (json => displayLessons(json.data))    
+    .then (json => displayLessons(json.data));
 }
 
 
@@ -14,14 +14,30 @@ const loadLevelWord = (id) => {
 }
 
 const displayLevelWord = (words) => {
-    // console.log(words)
     const wordContainer = document.getElementById('word-container');
-    // wordContainer.innerHTML = '';
+    wordContainer.innerHTML = '';
+
+    if (words.length === 0) {
+    wordContainer.innerHTML = `
+    <div class="text-center col-span-full rounded py-10 space-y-6 font-bangla">
+            <p class="text-xl font-medium text-gray-300">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
+            <h2 class="font-bold text-3xl">নেক্সট Lesson এ যান</h2>
+        </div>
+    `;
+    }
 
     words.forEach(word => {
         const card = document.createElement('div');
         card.innerHTML = `
-        <p>ct</p>
+        <div class="bg-white rounded-xl shadow-sm text-center px-5 py-10 space-y-4">
+            <h2 class="font-bold text-2xl">${word.word ? word.word : 'কোনও শব্দ পাওয়া যাইনি' }</h2>
+            <p class="font-semibold">Meaning /Pronounciation</p>
+            <div class="text-2xl font-medium font-bangla">${word.meaning ? word.meaning : 'কোনও অর্থ নাই'} / ${word.pronunciation? word.pronunciation : 'কোনও উচ্ছারন নাই'}</div>
+            <div class="flex justify-between items-center">
+                <button class="btn"><i class="fa-solid fa-circle-info"></i></button>
+                <button class="btn"><i class="fa-solid fa-volume-high"></i></button>
+            </div>
+        </div>
         `;
         wordContainer.append(card);
     });
